@@ -3,6 +3,7 @@ $data = Get-Content -Path "ad_export.json" -Raw  -Encoding UTF8 | ConvertFrom-Js
 
 $now = Get-Date
 $formattedNow = $now.ToString("yyyy-MM-dd HH:mm")
+$dateFormat = "yyyy-MM-dd HH:mm"
 $30_days = $now.AddDays(30)
 $more_than_30_days = $now.AddDays(-30)
 
@@ -15,19 +16,19 @@ $expiringUsers = foreach ($user in $data.users) {
         }
     }
 }
-
 $expiringCount = $expiringUsers.Count
 
-# Filter user who haven´t logged in for 30+ days
+# Filter users who haven't logged in for 30+ days
 $inactiveUsers = foreach ($user in $data.users) {
     if ($user.lastLogon) {
         $lastLogonDate = [datetime]::Parse($user.lastLogon)
-        if ($LastLogonDate -lt $more_than_30_days) {
+        if ($lastLogonDate -lt $more_than_30_days) {
+            $daysInactive = ($now - $lastLogonDate).Days
+            $user | Add-Member -NotePropertyName DaysInactive -NotePropertyValue $daysInactive
             $user
         }
     }
 }
-
 $inactiveCount = $inactiveUsers.Count
 
 #Make report
@@ -42,7 +43,21 @@ Export Date: $($data.export_date)
 ------------------------------------------------------------------------------------
 ⚠ CRITICAL: $expiringCount user account(s) expiring within 30 days
 ⚠ WARNING: $inactiveCount user account(s) have not logged in for over 30 days
+
+`nINACTIVE USERS (No login >30 days)
+--------------------------------------
+Username       Name                    Department    Last Login           Days Inactive
+
 "@
+
+# Sort the inactive users by DaysInactive descending
+$sortedInactiveUsers = $inactiveUsers | Sort-Object -Property DaysInactive -Descending
+
+foreach ($user in $sortedinactiveUsers) {
+    $user.lastLogon = [datetime]::Parse($user.lastLogon).ToString($dateFormat)
+    $report += "{0,-15}{1,-24}{2,-14}{3,-13}{4,8}`n" -f `
+        $user.samAccountName, $user.displayName, $user.department, $user.lastLogon, $user.DaysInactive
+}
 
 
 #Save report
