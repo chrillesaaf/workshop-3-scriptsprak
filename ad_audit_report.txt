@@ -1,24 +1,36 @@
 ﻿===================================================================================
 ACTIVE DIRECTORY AUDIT REPORT
 ===================================================================================
-Generated: 2025-10-17 17:11
+Generated: 2025-10-18 09:28
 Domain: techcorp.local
 Export Date: 2025-10-14T06:00:00
 
 EXECUTIVE SUMMARY
 ------------------------------------------------------------------------------------
-⚠ CRITICAL: 3 user account(s) expiring within 30 days
+⚠ CRITICAL: 2 user account(s) expiring within 30 days
 ⚠ WARNING: 7 user account(s) have not logged in for over 30 days
 
 
 INACTIVE USERS (No login >30 days)
---------------------------------------
+----------------------------------------------------------------------------------------
 Username       Name                    Department    Last Login           Days Inactive
 test_user      Test User               IT            2025-06-15 10:00     124
-admin_backup   Backup Admin Account    IT            2025-07-01 02:00     108
-nnils          Nils Nilsson            Operations    2025-08-15 09:00      63
-eolsson        Erik Olsson             Sales         2025-08-15 09:00      63
+admin_backup   Backup Admin Account    IT            2025-07-01 02:00     109
+nnils          Nils Nilsson            Operations    2025-08-15 09:00      64
+eolsson        Erik Olsson             Sales         2025-08-15 09:00      64
 mberg          Maria Berg              Finance       2025-08-20 14:30      58
-jsvensson      Johan Svensson          Operations    2025-08-25 08:15      53
+jsvensson      Johan Svensson          Operations    2025-08-25 08:15      54
 qquentin       Quentin Quentinsson     Sales         2025-09-01 10:00      46
+
+USER COUNT PER DEPARTMENT
+-------------------------------------------------------
+HR                 3 users
+IT                10 users
+Operations         5 users
+Sales              5 users
+Management         3 users
+Finance            5 users
+
+COMPUTER STATUS
+-------------------------------------------------------
 
