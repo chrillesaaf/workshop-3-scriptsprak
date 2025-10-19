@@ -1,7 +1,7 @@
 ﻿===================================================================================
 ACTIVE DIRECTORY AUDIT REPORT
 ===================================================================================
-Generated: 2025-10-19 19:23
+Generated: 2025-10-19 20:00
 Domain: techcorp.local
 Export Date: 2025-10-14T06:00:00
 
@@ -45,4 +45,12 @@ Windows Server 2022        3 (15%)
 Windows Server 2019        1 (5%)
 Windows 10 Enterprise      1 (5%) ⚠ Needs upgrade
 Windows 11 Enterprise      1 (5%)
+
+COMPUTERS BY SITE
+-------------------------------------------------------
+Huvudkontor        14 computer(s)
+Datacenter          7 computer(s)
+Lager               5 computer(s)
+Kontor Malmö        4 computer(s)
+Säkerhetskopia      1 computer(s)
 

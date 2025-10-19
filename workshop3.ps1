@@ -14,6 +14,7 @@ $total_computers = $data.computers.Count
 $active_computers = 0
 $inactive_computers = 0
 $osGroups = $data.computers | Group-Object -Property operatingSystem
+$siteGroups = $data.users | Group-Object -Property site | Sort-Object Count -Descending
 
 # Filter users with expiring accounts
 $expiringUsers = foreach ($user in $data.users) {
@@ -129,5 +130,16 @@ foreach ($group in $osGroups) {
         $report += "{0,-25}{1,3} ({2}%)`n" -f $os, $count, $percent
     }
 }
+$report += @"
+`nCOMPUTERS BY SITE
+-------------------------------------------------------`n
+"@
+
+foreach ($group in $siteGroups) {
+    $site = $group.Name
+    $count = $group.Count
+    $report += "{0,-18}{1,3} computer(s)`n" -f $site, $count
+}
+
 #Save report
 $report | Out-File -FilePath "ad_audit_report.txt" -Encoding UTF8
