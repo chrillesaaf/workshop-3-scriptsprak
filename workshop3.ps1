@@ -13,6 +13,7 @@ $more_than_30_days = $now.AddDays(-30)
 $total_computers = $data.computers.Count
 $active_computers = 0
 $inactive_computers = 0
+$osGroups = $data.computers | Group-Object -Property operatingSystem
 
 # Filter users with expiring accounts
 $expiringUsers = foreach ($user in $data.users) {
@@ -104,8 +105,29 @@ $report += @"
 -------------------------------------------------------
 Total Computers: $total_computers
 Active (seen <7 days): $active_computers
-Inactive (>30 days): $inactive_computers
+Inactive (>30 days): $inactive_computers`n
 "@
 
+$report += @"
+`nCOMPUTERS BY OPERATING SYSTEM
+-------------------------------------------------------`n
+"@
+#Loop through each OS group
+foreach ($group in $osGroups) {
+    $os = $group.Name
+    $count = $group.Count
+    if ($total_computers -gt 0) {
+        $percent = [math]::Round(($count / $total_computers) * 100)
+    }
+    else {
+        $percent = 0
+    }
+    if ($os -like "Windows 10*") {
+        $report += "{0,-25}{1,3} ({2}%) ⚠ Needs upgrade`n" -f $os, $count, $percent
+    }
+    else {
+        $report += "{0,-25}{1,3} ({2}%)`n" -f $os, $count, $percent
+    }
+}
 #Save report
 $report | Out-File -FilePath "ad_audit_report.txt" -Encoding UTF8
