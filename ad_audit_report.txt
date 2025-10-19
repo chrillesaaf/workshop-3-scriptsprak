@@ -1,7 +1,7 @@
 ﻿===================================================================================
 ACTIVE DIRECTORY AUDIT REPORT
 ===================================================================================
-Generated: 2025-10-18 09:28
+Generated: 2025-10-19 18:45
 Domain: techcorp.local
 Export Date: 2025-10-14T06:00:00
 
@@ -14,13 +14,13 @@ EXECUTIVE SUMMARY
 INACTIVE USERS (No login >30 days)
 ----------------------------------------------------------------------------------------
 Username       Name                    Department    Last Login           Days Inactive
-test_user      Test User               IT            2025-06-15 10:00     124
-admin_backup   Backup Admin Account    IT            2025-07-01 02:00     109
-nnils          Nils Nilsson            Operations    2025-08-15 09:00      64
-eolsson        Erik Olsson             Sales         2025-08-15 09:00      64
-mberg          Maria Berg              Finance       2025-08-20 14:30      58
-jsvensson      Johan Svensson          Operations    2025-08-25 08:15      54
-qquentin       Quentin Quentinsson     Sales         2025-09-01 10:00      46
+test_user      Test User               IT            2025-06-15 10:00     126
+admin_backup   Backup Admin Account    IT            2025-07-01 02:00     110
+nnils          Nils Nilsson            Operations    2025-08-15 09:00      65
+eolsson        Erik Olsson             Sales         2025-08-15 09:00      65
+mberg          Maria Berg              Finance       2025-08-20 14:30      60
+jsvensson      Johan Svensson          Operations    2025-08-25 08:15      55
+qquentin       Quentin Quentinsson     Sales         2025-09-01 10:00      48
 
 USER COUNT PER DEPARTMENT
 -------------------------------------------------------
@@ -33,4 +33,6 @@ Finance            5 users
 
 COMPUTER STATUS
 -------------------------------------------------------
-
+Total Computers: 20
+Active (seen <7 days): 15
+Inactive (>30 days): 4

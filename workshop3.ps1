@@ -1,12 +1,18 @@
 ﻿#Read Json-data
 $data = Get-Content -Path "ad_export.json" -Raw  -Encoding UTF8 | ConvertFrom-Json
 
-# Set up date variables
+# Set up variables
 $now = Get-Date
 $formattedNow = $now.ToString("yyyy-MM-dd HH:mm")
 $dateFormat = "yyyy-MM-dd HH:mm"
+$specificDate = Get-Date "2025-10-14"
+$less_than_7_days_ver2 = $specificDate.AddDays(-7)
+$more_than_30_days_ver2 = $specificDate.AddDays(-30)
 $30_days = $now.AddDays(30)
 $more_than_30_days = $now.AddDays(-30)
+$total_computers = $data.computers.Count
+$active_computers = 0
+$inactive_computers = 0
 
 # Filter users with expiring accounts
 $expiringUsers = foreach ($user in $data.users) {
@@ -18,7 +24,6 @@ $expiringUsers = foreach ($user in $data.users) {
     }
 }
 $expiringCount = $expiringUsers.Count
-
 # Filter users who haven't logged in for 30+ days
 $inactiveUsers = foreach ($user in $data.users) {
     if ($user.lastLogon) {
@@ -31,7 +36,6 @@ $inactiveUsers = foreach ($user in $data.users) {
     }
 }
 $inactiveCount = $inactiveUsers.Count
-
 # Create an empty hashtable to store department counts
 $department_counts = @{}
 
@@ -45,6 +49,19 @@ foreach ($user in $data.users) {
         }
         else {
             $department_counts[$dept] = 1
+        }
+    }
+}
+
+# Count computers
+foreach ($computer in $data.computers) {
+    if ($computer.lastLogon) {
+        $lastLogon = [datetime]::Parse($computer.lastLogon)
+        if ($lastLogon -ge $less_than_7_days_ver2) {
+            $active_computers++
+        }
+        elseif ($lastLogon -lt $more_than_30_days_ver2) {
+            $inactive_computers++
         }
     }
 }
@@ -84,7 +101,11 @@ foreach ($dept in $department_counts.Keys) {
 }
 $report += @"
 `nCOMPUTER STATUS
--------------------------------------------------------`n
+-------------------------------------------------------
+Total Computers: $total_computers
+Active (seen <7 days): $active_computers
+Inactive (>30 days): $inactive_computers
 "@
+
 #Save report
 $report | Out-File -FilePath "ad_audit_report.txt" -Encoding UTF8
