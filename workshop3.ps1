@@ -141,5 +141,28 @@ foreach ($group in $siteGroups) {
     $report += "{0,-18}{1,3} computer(s)`n" -f $site, $count
 }
 
+$report += @"
+`nDAYS SINCE THE USER CHANGED PASSWORD
+-------------------------------------------------------`n
+"@
+# Create a list of users with password age
+$usersWithAge = foreach ($user in $data.users) {
+    if ($user.passwordLastSet) {
+        $pwdDate = [datetime]::Parse($user.passwordLastSet)
+        $ageDays = ($now - $pwdDate).Days
+
+        [PSCustomObject]@{
+            User        = $user.samAccountName
+            PasswordAge = $ageDays
+        }
+    }
+}
+# Sort by password age descending (oldest first)
+$sortedUsers = $usersWithAge | Sort-Object -Property PasswordAge -Descending
+        
+foreach ($entry in $sortedUsers) {
+    $report += "{0,-18}{1,3} days since last password change`n" -f $entry.User, $entry.PasswordAge
+}
+
 #Save report
 $report | Out-File -FilePath "ad_audit_report.txt" -Encoding UTF8

@@ -1,7 +1,7 @@
 ﻿===================================================================================
 ACTIVE DIRECTORY AUDIT REPORT
 ===================================================================================
-Generated: 2025-10-19 20:00
+Generated: 2025-10-21 09:49
 Domain: techcorp.local
 Export Date: 2025-10-14T06:00:00
 
@@ -14,13 +14,13 @@ EXECUTIVE SUMMARY
 INACTIVE USERS (No login >30 days)
 ----------------------------------------------------------------------------------------
 Username       Name                    Department    Last Login           Days Inactive
-test_user      Test User               IT            2025-06-15 10:00     126
-admin_backup   Backup Admin Account    IT            2025-07-01 02:00     110
-nnils          Nils Nilsson            Operations    2025-08-15 09:00      65
-eolsson        Erik Olsson             Sales         2025-08-15 09:00      65
-mberg          Maria Berg              Finance       2025-08-20 14:30      60
-jsvensson      Johan Svensson          Operations    2025-08-25 08:15      55
-qquentin       Quentin Quentinsson     Sales         2025-09-01 10:00      48
+test_user      Test User               IT            2025-06-15 10:00     127
+admin_backup   Backup Admin Account    IT            2025-07-01 02:00     112
+nnils          Nils Nilsson            Operations    2025-08-15 09:00      67
+eolsson        Erik Olsson             Sales         2025-08-15 09:00      67
+mberg          Maria Berg              Finance       2025-08-20 14:30      61
+jsvensson      Johan Svensson          Operations    2025-08-25 08:15      57
+qquentin       Quentin Quentinsson     Sales         2025-09-01 10:00      49
 
 USER COUNT PER DEPARTMENT
 -------------------------------------------------------
@@ -53,4 +53,38 @@ Datacenter          7 computer(s)
 Lager               5 computer(s)
 Kontor Malmö        4 computer(s)
 Säkerhetskopia      1 computer(s)
+
+DAYS SINCE THE USER CHANGED PASSWORD
+-------------------------------------------------------
+admin_backup      293 days since last password change
+test_user         278 days since last password change
+eolsson           202 days since last password change
+nnils             193 days since last password change
+mberg             163 days since last password change
+jjohan            159 days since last password change
+qquentin          154 days since last password change
+jsvensson         149 days since last password change
+ffred             141 days since last password change
+rrobert           127 days since last password change
+yynva             122 days since last password change
+mmaria            111 days since last password change
+ddavid             92 days since last password change
+ttomas             88 days since last password change
+bbjorn             67 days since last password change
+ppeter             61 days since last password change
+vviktor            52 days since last password change
+aanders            49 days since last password change
+wwilma             45 days since last password change
+ssara              40 days since last password change
+eerik              36 days since last password change
+hhelena            30 days since last password change
+kkarl              25 days since last password change
+oolof              20 days since last password change
+ccarl              19 days since last password change
+zzara              19 days since last password change
+iingrid            15 days since last password change
+uulrika            12 days since last password change
+ggunnar            11 days since last password change
+xxavier             9 days since last password change
+llars               9 days since last password change
 
