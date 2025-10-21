@@ -193,3 +193,6 @@ foreach ($entry in $top10) {
 
 #Save report
 $report | Out-File -FilePath "ad_audit_report.txt" -Encoding UTF8
+
+#export InactiveUsers to CSV
+$sortedInactiveUsers | Export-Csv -Path "inactive_users.csv" -NoTypeInformation -Encoding UTF8
