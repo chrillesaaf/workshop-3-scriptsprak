@@ -164,5 +164,32 @@ foreach ($entry in $sortedUsers) {
     $report += "{0,-18}{1,3} days since last password change`n" -f $entry.User, $entry.PasswordAge
 }
 
+$report += @"
+`n10 COMPUTERS WITH OLDEST CHECK-IN
+-------------------------------------------------------`n
+"@
+# Create list with parsed dates
+$computersWithLogon = foreach ($computer in $data.computers) {
+    if ($computer.lastLogon) {
+        $logonDate = [datetime]::Parse($computer.lastLogon)
+
+        [PSCustomObject]@{
+            Name      = $computer.name
+            LastLogon = $logonDate
+            DaysAgo   = ((Get-Date) - $logonDate).Days
+        }
+    }
+}
+
+# Sort by oldest logon (most days ago)
+$sorted = $computersWithLogon | Sort-Object -Property DaysAgo -Descending
+
+# Take top 10
+$top10 = $sorted | Select-Object -First 10
+
+foreach ($entry in $top10) {
+    $report += "{0,-20} Last seen {1,3} days ago`n" -f $entry.Name, $entry.DaysAgo
+}
+
 #Save report
 $report | Out-File -FilePath "ad_audit_report.txt" -Encoding UTF8
