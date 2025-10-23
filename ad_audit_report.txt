@@ -1,26 +1,34 @@
 ﻿===================================================================================
 ACTIVE DIRECTORY AUDIT REPORT
 ===================================================================================
-Generated: 2025-10-21 10:49
+Generated: 2025-10-23 18:19
 Domain: techcorp.local
 Export Date: 2025-10-14T06:00:00
 
 EXECUTIVE SUMMARY
 ------------------------------------------------------------------------------------
 ⚠ CRITICAL: 2 user account(s) expiring within 30 days
-⚠ WARNING: 7 user account(s) have not logged in for over 30 days
+⚠ WARNING: 7 user account(s) have not logged in for over 30+ days
+⚠ WARNING: 4 computer(s) not seen in 30+ days
+⚠ SECURITY: 13 user(s) with passwords older than 90 days
+✓ POSITIVE: 10% of computers running Windows 11
 
+USER ACCOUNT STATUS
+----------------------------------------------------------------------------------------
+Total Users: 31
+Active Users: 29 (94%)
+Disabled Accounts: 2
 
 INACTIVE USERS (No login >30 days)
 ----------------------------------------------------------------------------------------
 Username       Name                    Department    Last Login           Days Inactive
-test_user      Test User               IT            2025-06-15 10:00     128
-admin_backup   Backup Admin Account    IT            2025-07-01 02:00     112
-nnils          Nils Nilsson            Operations    2025-08-15 09:00      67
-eolsson        Erik Olsson             Sales         2025-08-15 09:00      67
-mberg          Maria Berg              Finance       2025-08-20 14:30      61
-jsvensson      Johan Svensson          Operations    2025-08-25 08:15      57
-qquentin       Quentin Quentinsson     Sales         2025-09-01 10:00      50
+test_user      Test User               IT            2025-06-15 10:00     130
+admin_backup   Backup Admin Account    IT            2025-07-01 02:00     114
+nnils          Nils Nilsson            Operations    2025-08-15 09:00      69
+eolsson        Erik Olsson             Sales         2025-08-15 09:00      69
+mberg          Maria Berg              Finance       2025-08-20 14:30      64
+jsvensson      Johan Svensson          Operations    2025-08-25 08:15      59
+qquentin       Quentin Quentinsson     Sales         2025-09-01 10:00      52
 
 USER COUNT PER DEPARTMENT
 -------------------------------------------------------
@@ -56,48 +64,48 @@ Säkerhetskopia      1 computer(s)
 
 DAYS SINCE THE USER CHANGED PASSWORD
 -------------------------------------------------------
-admin_backup      293 days since last password change
-test_user         279 days since last password change
-eolsson           203 days since last password change
-nnils             193 days since last password change
-mberg             163 days since last password change
-jjohan            159 days since last password change
-qquentin          154 days since last password change
-jsvensson         149 days since last password change
-ffred             142 days since last password change
-rrobert           127 days since last password change
-yynva             122 days since last password change
-mmaria            112 days since last password change
-ddavid             92 days since last password change
-ttomas             88 days since last password change
-bbjorn             67 days since last password change
-ppeter             62 days since last password change
-vviktor            52 days since last password change
-aanders            50 days since last password change
-wwilma             45 days since last password change
-ssara              40 days since last password change
-eerik              36 days since last password change
-hhelena            30 days since last password change
-kkarl              25 days since last password change
-oolof              20 days since last password change
-ccarl              19 days since last password change
-zzara              19 days since last password change
-iingrid            16 days since last password change
-uulrika            13 days since last password change
-ggunnar            11 days since last password change
-xxavier            10 days since last password change
-llars               9 days since last password change
+admin_backup      295 days since last password change
+test_user         281 days since last password change
+eolsson           205 days since last password change
+nnils             196 days since last password change
+mberg             166 days since last password change
+jjohan            161 days since last password change
+qquentin          156 days since last password change
+jsvensson         151 days since last password change
+ffred             144 days since last password change
+rrobert           130 days since last password change
+yynva             125 days since last password change
+mmaria            114 days since last password change
+ddavid             95 days since last password change
+ttomas             90 days since last password change
+bbjorn             69 days since last password change
+ppeter             64 days since last password change
+vviktor            54 days since last password change
+aanders            52 days since last password change
+wwilma             48 days since last password change
+ssara              43 days since last password change
+eerik              38 days since last password change
+hhelena            33 days since last password change
+kkarl              28 days since last password change
+ccarl              22 days since last password change
+oolof              22 days since last password change
+zzara              21 days since last password change
+iingrid            18 days since last password change
+uulrika            15 days since last password change
+ggunnar            13 days since last password change
+xxavier            12 days since last password change
+llars              11 days since last password change
 
 10 COMPUTERS WITH OLDEST CHECK-IN
 -------------------------------------------------------
-OLD-PC-001           Last seen  98 days ago
-PC-LAG-003           Last seen  72 days ago
-LAPTOP-HK-002        Last seen  52 days ago
-PC-MAL-003           Last seen  45 days ago
-TEST-VM-001          Last seen  30 days ago
-PC-HK-005            Last seen   8 days ago
-PC-LAG-001           Last seen   7 days ago
-PC-DR-001            Last seen   7 days ago
-PC-LAG-002           Last seen   7 days ago
-SRV-DR-BACKUP        Last seen   7 days ago
+OLD-PC-001           Last seen 100 days ago
+PC-LAG-003           Last seen  74 days ago
+LAPTOP-HK-002        Last seen  54 days ago
+PC-MAL-003           Last seen  48 days ago
+TEST-VM-001          Last seen  33 days ago
+PC-HK-005            Last seen  11 days ago
+PC-LAG-002           Last seen  10 days ago
+PC-MAL-001           Last seen  10 days ago
+PC-HK-003            Last seen  10 days ago
+PC-LAG-001           Last seen   9 days ago
 

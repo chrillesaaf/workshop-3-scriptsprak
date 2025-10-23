@@ -1,6 +1,6 @@
 ﻿#Read Json-data
 $data = Get-Content -Path "ad_export.json" -Raw  -Encoding UTF8 | ConvertFrom-Json
-
+#======================================================================================================================================================================
 # Set up variables
 $now = Get-Date
 $formattedNow = $now.ToString("yyyy-MM-dd HH:mm")
@@ -15,7 +15,7 @@ $active_computers = 0
 $inactive_computers = 0
 $osGroups = $data.computers | Group-Object -Property operatingSystem
 $siteGroups = $data.users | Group-Object -Property site | Sort-Object Count -Descending
-
+#======================================================================================================================================================================
 # Filter users with expiring accounts
 $expiringUsers = foreach ($user in $data.users) {
     if ($user.accountExpires) {
@@ -26,6 +26,7 @@ $expiringUsers = foreach ($user in $data.users) {
     }
 }
 $expiringCount = $expiringUsers.Count
+#======================================================================================================================================================================
 # Filter users who haven't logged in for 30+ days
 $inactiveUsers = foreach ($user in $data.users) {
     if ($user.lastLogon) {
@@ -38,9 +39,10 @@ $inactiveUsers = foreach ($user in $data.users) {
     }
 }
 $inactiveCount = $inactiveUsers.Count
+#======================================================================================================================================================================
 # Create an empty hashtable to store department counts
 $department_counts = @{}
-
+#======================================================================================================================================================================
 # Loop through all users
 foreach ($user in $data.users) {
     $dept = $user.department
@@ -54,7 +56,7 @@ foreach ($user in $data.users) {
         }
     }
 }
-
+#======================================================================================================================================================================
 # Count computers
 foreach ($computer in $data.computers) {
     if ($computer.lastLogon) {
@@ -67,7 +69,37 @@ foreach ($computer in $data.computers) {
         }
     }
 }
+#======================================================================================================================================================================
+#Count passwords older than 90 days
+$oldPasswords = $usersWithAge | Where-Object { $_.PasswordAge -gt 90 }
+$oldPasswordCount = $oldpasswords.Count
 
+#Count % usage of Win 11
+$win11Count = ($osGroups | Where-Object { $_.Name -like "Windows 11*" }).Count
+if ($total_computers -gt 0) {
+    $windows11Percent = [math]::Round(($win11Count / $total_computers) * 100)
+}
+else {
+    $windows11Percent = 0
+}
+#======================================================================================================================================================================
+#Count total users
+$totalUsers = $data.users.Count
+
+#Count disabled users
+$activeUsers = ($data.users | Where-Object { $_.enabled -eq $true }).Count
+
+#Count disabled users
+$disabledUsers = ($data.users | Where-Object { $_.enabled -eq $false }).Count
+
+#Get Percentage
+if ($totalUsers -gt 0) {
+    $activePercent = [math]::Round(($activeUsers / $totalUsers) * 100)
+}
+else {
+    $activePercent = 0
+}
+#======================================================================================================================================================================
 #Make report
 $report = @"
 ===================================================================================
@@ -79,9 +111,23 @@ Export Date: $($data.export_date)
 `nEXECUTIVE SUMMARY
 ------------------------------------------------------------------------------------
 ⚠ CRITICAL: $expiringCount user account(s) expiring within 30 days
-⚠ WARNING: $inactiveCount user account(s) have not logged in for over 30 days
+⚠ WARNING: $inactiveCount user account(s) have not logged in for over 30+ days
+⚠ WARNING: $inactive_computers computer(s) not seen in 30+ days
+⚠ SECURITY: $oldPasswordCount user(s) with passwords older than 90 days
+✓ POSITIVE: $windows11Percent% of computers running Windows 11
+"@
+#======================================================================================================================================================================
+$report += @"
+`n`nUSER ACCOUNT STATUS
+----------------------------------------------------------------------------------------
+Total Users: $totalUsers
+Active Users: $activeUsers ($activePercent%)
+Disabled Accounts: $disabledUsers
+"@
 
-`nINACTIVE USERS (No login >30 days)
+#======================================================================================================================================================================
+$report += @"
+`n`nINACTIVE USERS (No login >30 days)
 ----------------------------------------------------------------------------------------
 Username       Name                    Department    Last Login           Days Inactive`n
 "@
@@ -93,6 +139,7 @@ foreach ($user in $sortedinactiveUsers) {
     $report += "{0,-15}{1,-24}{2,-14}{3,-13}{4,8}`n" -f `
         $user.samAccountName, $user.displayName, $user.department, $user.lastLogon, $user.DaysInactive
 }
+#======================================================================================================================================================================
 $report += @"
 `nUSER COUNT PER DEPARTMENT
 -------------------------------------------------------`n
@@ -101,6 +148,7 @@ $report += @"
 foreach ($dept in $department_counts.Keys) {
     $report += "{0,-12}{1,8} users`n" -f $dept, $department_counts[$dept]
 }
+#======================================================================================================================================================================
 $report += @"
 `nCOMPUTER STATUS
 -------------------------------------------------------
@@ -108,7 +156,7 @@ Total Computers: $total_computers
 Active (seen <7 days): $active_computers
 Inactive (>30 days): $inactive_computers`n
 "@
-
+#======================================================================================================================================================================
 $report += @"
 `nCOMPUTERS BY OPERATING SYSTEM
 -------------------------------------------------------`n
@@ -130,6 +178,7 @@ foreach ($group in $osGroups) {
         $report += "{0,-25}{1,3} ({2}%)`n" -f $os, $count, $percent
     }
 }
+#======================================================================================================================================================================
 $report += @"
 `nCOMPUTERS BY SITE
 -------------------------------------------------------`n
@@ -140,7 +189,7 @@ foreach ($group in $siteGroups) {
     $count = $group.Count
     $report += "{0,-18}{1,3} computer(s)`n" -f $site, $count
 }
-
+#======================================================================================================================================================================
 $report += @"
 `nDAYS SINCE THE USER CHANGED PASSWORD
 -------------------------------------------------------`n
@@ -157,17 +206,19 @@ $usersWithAge = foreach ($user in $data.users) {
         }
     }
 }
+#======================================================================================================================================================================
 # Sort by password age descending (oldest first)
 $sortedUsers = $usersWithAge | Sort-Object -Property PasswordAge -Descending
         
 foreach ($entry in $sortedUsers) {
     $report += "{0,-18}{1,3} days since last password change`n" -f $entry.User, $entry.PasswordAge
 }
-
+#======================================================================================================================================================================
 $report += @"
 `n10 COMPUTERS WITH OLDEST CHECK-IN
 -------------------------------------------------------`n
 "@
+#======================================================================================================================================================================
 # Create list with parsed dates
 $computersWithLogon = foreach ($computer in $data.computers) {
     if ($computer.lastLogon) {
@@ -180,19 +231,21 @@ $computersWithLogon = foreach ($computer in $data.computers) {
         }
     }
 }
-
+#======================================================================================================================================================================
 # Sort by oldest logon (most days ago)
 $sorted = $computersWithLogon | Sort-Object -Property DaysAgo -Descending
-
+#======================================================================================================================================================================
 # Take top 10
 $top10 = $sorted | Select-Object -First 10
 
 foreach ($entry in $top10) {
     $report += "{0,-20} Last seen {1,3} days ago`n" -f $entry.Name, $entry.DaysAgo
 }
-
+#======================================================================================================================================================================
 #Save report
 $report | Out-File -FilePath "ad_audit_report.txt" -Encoding UTF8
-
+#======================================================================================================================================================================
 #export InactiveUsers to CSV
-$sortedInactiveUsers | Export-Csv -Path "inactive_users.csv" -NoTypeInformation -Encoding UTF8
+$sortedInactiveUsers | 
+Select-Object -Property SamAccountName, DisplayName, Email, Site, Department, LastLogon, PasswordLastSet, Enabled, AccountExpires | 
+Export-Csv -Path "inactive_users.csv" -NoTypeInformation -Encoding UTF8
